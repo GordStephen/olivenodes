@@ -32,6 +32,26 @@ class AbstractNode():
         self.graph.checknode(other)
         return MergeNode(self.graph, base=self, blend=other)
 
+    def __add__(self, other):
+        self.graph.checknode(other)
+        return MathNode(self.graph, method=MathNode.Add, param_a=self, param_b=other)
+
+    def __sub__(self, other):
+        self.graph.checknode(other)
+        return MathNode(self.graph, method=MathNode.Subtract, param_a=self, param_b=other)
+
+    def __mul__(self, other):
+        self.graph.checknode(other)
+        return MathNode(self.graph, method=MathNode.Multiply, param_a=self, param_b=other)
+
+    def __truediv__(self, other):
+        self.graph.checknode(other)
+        return MathNode(self.graph, method=MathNode.Divide, param_a=self, param_b=other)
+
+    def __pow__(self, other):
+        self.graph.checknode(other)
+        return MathNode(self.graph, method=MathNode.Power, param_a=self, param_b=other)
+
 
 class ClipNode(AbstractNode):
 
@@ -54,6 +74,24 @@ class ClipNode(AbstractNode):
 
         super().__init__(graph, label, **params)
         graph.clipnode = self
+
+
+class MathNode(AbstractNode):
+
+    id = "org.olivevideoeditor.Olive.math"
+
+    # Methods
+    Add = 0
+    Subtract = 1
+    Multiply = 2
+    Divide = 3
+    Power = 4
+
+    defaultparams = {
+        "method": Add,
+        "param_a": 0,
+        "param_b": 0
+    }
 
 
 class MergeNode(AbstractNode):
