@@ -52,6 +52,9 @@ class AbstractNode():
         self.graph.checknode(other)
         return MathNode(self.graph, method=MathNode.Power, param_a=self, param_b=other)
 
+    def transform(self, **params):
+        return TransformNode(self.graph, tex=self, **params)
+
 
 class ClipNode(AbstractNode):
 
@@ -117,4 +120,31 @@ class ShapeNode(AbstractNode):
         "pos": (0, 0),
         "size": (100, 100),
         "fill": (1.0, 0.0, 0.0)
+    }
+
+
+class TransformNode(AbstractNode):
+
+    id = "org.olivevideoeditor.Olive.transform"
+
+    # Autoscales
+    None_ = 0
+    Fit = 1
+    Fill = 2
+    Stretch = 3
+
+    # Interpolations
+    NearestNeighbor = 0
+    Bilinear = 1
+    MipMappedBilinear = 2
+
+    defaultparams = {
+            "tex": None,
+            "pos": (0, 0),
+            "rot": 0,
+            "scale": (1, 1),
+            "uniform_scale": True,
+            "anchor": (0, 0),
+            "autoscale": None_,
+            "interpolation": MipMappedBilinear
     }
