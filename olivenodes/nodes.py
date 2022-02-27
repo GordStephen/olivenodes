@@ -28,6 +28,10 @@ class AbstractNode():
     def __setitem__(self, param, value):
         self.params[param] = value
 
+    def __or__(self, other):
+        self.graph.checknode(other)
+        return MergeNode(self.graph, base=self, blend=other)
+
 
 class ClipNode(AbstractNode):
 
@@ -50,6 +54,16 @@ class ClipNode(AbstractNode):
 
         super().__init__(graph, label, **params)
         graph.clipnode = self
+
+
+class MergeNode(AbstractNode):
+
+    id = "org.olivevideoeditor.Olive.merge"
+
+    defaultparams = {
+        "base": None,
+        "blend": None
+    }
 
 
 class ShapeNode(AbstractNode):
