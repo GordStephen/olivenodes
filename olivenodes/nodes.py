@@ -153,6 +153,13 @@ class TextNode(AbstractNode):
     }
 
 
+class TimeNode(AbstractNode):
+
+    id = "org.olivevideoeditor.Olive.time"
+
+    defaultparams = {}
+
+
 class TransformNode(AbstractNode):
 
     id = "org.olivevideoeditor.Olive.transform"

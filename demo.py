@@ -1,13 +1,15 @@
-from olivenodes import Graph, ClipNode, ShapeNode, SolidNode, TextNode
+from olivenodes import Graph, ClipNode, ShapeNode, SolidNode, TextNode, TimeNode
 
 graph = Graph()
 
 # Create leaf nodes
 
+t = TimeNode(graph)
+
 solid = SolidNode(graph, color=(0.1, 0.1, 0.1))
 
 square = ShapeNode(graph, "Red Square", size=(300, 300)) \
-    .transform(pos=(-100, 0), rot=45)
+    .transform(pos=(-100, 0), rot=t*90)
 
 circle = ShapeNode(graph, "Blue Circle", type=ShapeNode.Circle,
                                          size=(300, 300), color=(0, 0, 1)) \
