@@ -123,6 +123,15 @@ class ShapeNode(AbstractNode):
     }
 
 
+class SolidNode(AbstractNode):
+
+    id = "org.olivevideoeditor.Olive.solidgenerator"
+
+    defaultparams = {
+        "color": (1.0, 0.0, 0.0)
+    }
+
+
 class TransformNode(AbstractNode):
 
     id = "org.olivevideoeditor.Olive.transform"
