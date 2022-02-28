@@ -132,6 +132,27 @@ class SolidNode(AbstractNode):
     }
 
 
+class TextNode(AbstractNode):
+
+    id = "org.olivevideoeditor.Olive.text2"
+
+    # Vertical Alignments
+    Top = 0
+    Center = 1
+    Bottom = 2
+
+    defaultparams = {
+        "pos": (0, 0),
+        "size": (400, 300),
+        "color": (1.0, 1.0, 1.0),
+        "text": "Sample Text",
+        "html": False,
+        "valign": Top,
+        "font": None,
+        "font_size": 72
+    }
+
+
 class TransformNode(AbstractNode):
 
     id = "org.olivevideoeditor.Olive.transform"
