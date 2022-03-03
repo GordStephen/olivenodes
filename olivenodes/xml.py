@@ -66,6 +66,10 @@ class XMLOutput():
                 add_input(xmlnode, param_name, is_clip, None)
                 add_connection(connections, param_name, val.ptr)
 
+            elif isinstance(val, dict):
+                dicts = split_tracks(val)
+                add_input(xmlnode, param_name, is_clip, *dicts)
+
             elif isinstance(val, tuple):
                 add_input(xmlnode, param_name, is_clip, *val)
 
@@ -82,7 +86,10 @@ class XMLOutput():
         return ET.tostring(self.root, encoding="unicode")
 
 
+
 def add_input(node, id, is_clip, *tracks):
+
+    is_keyframes = isinstance(tracks[0], dict)
 
     input = ET.SubElement(node, "input")
     input.set("id", id)
@@ -91,23 +98,44 @@ def add_input(node, id, is_clip, *tracks):
 
     if not is_clip:
         keyframing = ET.SubElement(primary, "keyframing")
-        keyframing.text = "0"
+        keyframing.text = "1" if is_keyframes else "0"
 
     standard = ET.SubElement(primary, "standard")
     keyframes = ET.SubElement(primary, "keyframes")
 
     for track in tracks:
 
-        ET.SubElement(keyframes, "track")
+        keyframes_track = ET.SubElement(keyframes, "track")
         standard_track = ET.SubElement(standard, "track")
 
-        if track is not None:
+        if is_keyframes:
+            add_keyframes(keyframes_track, id, track)
+            standard_track.text = "0"
+
+        elif track:
             standard_track.text = str(track)
 
     ET.SubElement(input, "subelements").set("count", "0")
 
     return input
 
+def add_keyframes(keyframes, id, track):
+
+    for (t, val) in track.items():
+
+        key = ET.SubElement(keyframes, "key")
+
+        key.set("input", id)
+        key.set("time", t)
+
+        # TODO: Beziers
+        key.set("type", "0")
+        key.set("inhandlex", "0")
+        key.set("inhandley", "0")
+        key.set("outhandlex", "0")
+        key.set("outhandley", "0")
+
+        key.text = str(val)
 
 def add_connection(connections, input, output):
 
@@ -141,3 +169,13 @@ def add_cliphint(hints):
 
 def randuuid():
     return "{" + str(uuid4()) + "}"
+
+def split_tracks(d):
+
+    dicts = tuple({} for _ in next(iter(d.values())))
+
+    for (t, tracks) in d.items():
+        for (i, track) in enumerate(tracks):
+            dicts[i][t] = track
+
+    return dicts

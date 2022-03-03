@@ -13,7 +13,7 @@ square = ShapeNode(graph, "Red Square", size=(300, 300)) \
 
 circle = ShapeNode(graph, "Blue Circle", type=ShapeNode.Circle,
                                          size=(300, 300), color=(0, 0, 1)) \
-    .transform(pos=(100, 0))
+    .transform(pos={"0/30": (0, 0), "15/30": (200, 0), "30/30": (0, 0)})
 
 text = TextNode(graph, text="Hello World", size=(1100, 300), pos=(0, 35),
                        font_size=200, valign=TextNode.Center)
